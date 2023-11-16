@@ -34,6 +34,7 @@
     <p><a href="list?sort=asc">日付昇順でソート</a></p>
     <p><a href="list?sort=desc">日付降順でソート</a></p>
     <p><a href="list?sort=priority_asc">優先度昇順でソート</a></p>
+    <p><a href="list?sort=priority_desc">優先度降順でソート</a></p>
     
     <p><a href="new">新規作成</a></p> 
 </body>

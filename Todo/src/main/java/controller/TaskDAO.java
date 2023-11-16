@@ -24,8 +24,9 @@ public class TaskDAO {
             sql += " ORDER BY ymd DESC";
         } else if ("priority_asc".equals(sort)) {
             sql += " ORDER BY CASE priority WHEN 'high' THEN 1 WHEN 'normal' THEN 2 WHEN 'low' THEN 3 ELSE 4 END, ymd";
+        } else if ("priority_desc".equals(sort)) {
+            sql += " ORDER BY CASE priority WHEN 'low' THEN 1 WHEN 'normal' THEN 2 WHEN 'high' THEN 3 ELSE 4 END, ymd";
         }
-        
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(sql);
