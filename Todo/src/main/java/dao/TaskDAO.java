@@ -1,4 +1,4 @@
-package controller;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +43,7 @@ public class TaskDAO {
             }
 
         } catch (Exception e) {
-            e.printStackTrace(); // 適切なエラーハンドリングを行う
+            e.printStackTrace();
         }
 
         return tasks;
