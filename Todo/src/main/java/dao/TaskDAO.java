@@ -14,7 +14,14 @@ public class TaskDAO {
     private final String password = "";
 
     public List<HashMap<String, String>> getTasksBySort(String sort) {
+    	try {
+    		Class.forName("com.mysql.jdbc.Driver");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
         List<HashMap<String, String>> tasks = new ArrayList<>();
+        
         String sql = "SELECT * FROM posts";
 
         // ソートのためのSQL文を準備

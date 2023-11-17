@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,12 +16,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ListServlet extends HttpServlet {   
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+    	
         String sort = request.getParameter("sort");
 
         TaskDAO taskDAO = new TaskDAO();
         List<HashMap<String, String>> tasks = taskDAO.getTasksBySort(sort);
-
+       
         request.setAttribute("rows", tasks);
         
         if (request.getAttribute("message") == null) {
