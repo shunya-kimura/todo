@@ -24,10 +24,6 @@ public class ListServlet extends HttpServlet {
        
         request.setAttribute("rows", tasks);
         
-        if (request.getAttribute("message") == null) {
-            request.setAttribute("message", "todoを管理しましょう");
-        }
-        
         String view = "/WEB-INF/views/list.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
         dispatcher.forward(request, response);
