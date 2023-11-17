@@ -5,15 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
  <h1>Create</h1>
     <form method="POST" action="createuser">
-        <label for="username">Username:</label>
+        <label for="username">Username</label>
         <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password"><br>
-        <label for="password">Profile:</label>
+        <label for="password">Profile</label>
         <textarea id="profile" name="profile"></textarea><br>
         <input type="submit" value="Create">
     </form>
