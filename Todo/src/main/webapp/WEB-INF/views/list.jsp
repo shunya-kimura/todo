@@ -37,5 +37,8 @@
     </div>
 
     <button><a href="new">新規作成</a></button> 
+     <form method="POST" action="logout">
+      <input type="submit" value="Logout">
+    </form>
 </body>
 </html>

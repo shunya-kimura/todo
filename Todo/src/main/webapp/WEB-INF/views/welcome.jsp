@@ -32,6 +32,8 @@
     <form method="POST" action="logout">
       <input type="submit" value="Logout">
     </form>
+    <a href='list'>Todoリストへ</a>
+    
 
 </body>
 </html>

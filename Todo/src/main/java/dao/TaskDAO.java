@@ -12,8 +12,9 @@ public class TaskDAO {
     private final String url = "jdbc:mysql://localhost/todo";
     private final String user = "root";
     private final String password = "";
+    
 
-    public List<HashMap<String, String>> getTasksBySort(String sort) {
+    public List<HashMap<String, String>> getTasksBySort(String sort,int user_id) {
     	try {
     		Class.forName("com.mysql.jdbc.Driver");
     	} catch (Exception e) {
@@ -22,7 +23,8 @@ public class TaskDAO {
     	
         List<HashMap<String, String>> tasks = new ArrayList<>();
         
-        String sql = "SELECT * FROM posts";
+        String sql = "SELECT * FROM posts WHERE user_id = ?";
+        
 
         // ソートのためのSQL文を準備
         if ("asc".equals(sort)) {
@@ -34,11 +36,13 @@ public class TaskDAO {
         } else if ("priority_desc".equals(sort)) {
             sql += " ORDER BY CASE priority WHEN 'low' THEN 1 WHEN 'normal' THEN 2 WHEN 'high' THEN 3 ELSE 4 END, ymd";
         }
-
-        try (Connection connection = DriverManager.getConnection(url, user, password);
+        
+       
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
              PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
+             statement.setInt(1, user_id);
+             ResultSet resultSet = statement.executeQuery();
+        	
             while (resultSet.next()) {
                 HashMap<String, String> task = new HashMap<>();
                 task.put("id", resultSet.getString("id"));
