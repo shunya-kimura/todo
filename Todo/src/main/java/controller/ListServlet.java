@@ -1,10 +1,10 @@
 package controller;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import dao.TaskDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.dao.ListDAO;
+import model.dto.TodoDTO;
+
 
 @WebServlet("/list")
 public class ListServlet extends HttpServlet {   
@@ -27,14 +30,19 @@ public class ListServlet extends HttpServlet {
     	}
     	
     	HttpSession session1 = request.getSession();
-		int user_id = (int)session1.getAttribute("id"); 
+		int userId = (int)session1.getAttribute("id");
     	
-        String sort = request.getParameter("sort");
 
-        TaskDAO taskDAO = new TaskDAO();
-        List<HashMap<String, String>> tasks = taskDAO.getTasksBySort(sort ,user_id);
+        List<TodoDTO> todoList = new ArrayList<>();
+        ListDAO dao = new ListDAO();
         
-        request.setAttribute("rows", tasks);
+        try {
+			todoList = dao.ListTodo(userId);
+			request.setAttribute("todoList", todoList);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
         
         String view = "/WEB-INF/views/list.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);

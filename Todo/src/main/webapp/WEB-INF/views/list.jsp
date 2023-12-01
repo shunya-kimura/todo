@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%@ page import="model.dto.TodoDTO" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,13 +19,13 @@
             <th>優先度</th>
         </tr>
         <% 
-            ArrayList<HashMap<String, String>> rows = (ArrayList<HashMap<String, String>>)request.getAttribute("rows"); 
-            for (HashMap<String, String> columns : rows) {
+            List<TodoDTO> todoList = (List<TodoDTO>)request.getAttribute("todoList"); 
+            for (TodoDTO todo : todoList) {
         %>
         <tr>
-            <td><a href='show?id=<%= columns.get("id") %>'><%= columns.get("title") %></a></td>
-            <td><%= columns.get("ymd") %></td>
-            <td><%= columns.get("priority") %></td>
+            <td><a href='show?id=<%= todo.getId() %>'><%= todo.getTitle() %></a></td>
+            <td><%= todo.getYmd() %></td>
+            <td><%= todo.getPriority() %></td>
         </tr>
         <% } %>
     </table>
