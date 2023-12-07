@@ -1,6 +1,5 @@
 package model.dao;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,7 +12,7 @@ import model.DBConnection;
 import model.dto.TodoDTO;
 
 
-public class ListDAO implements Serializable {
+public class ListDAO {
     
 
     public List<TodoDTO> ListTodo(int userId) 
