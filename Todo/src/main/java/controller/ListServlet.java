@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.ListDAO;
+import model.dao.SearchDAO;
 import model.dto.TodoDTO;
 
 
@@ -31,18 +32,26 @@ public class ListServlet extends HttpServlet {
     	
     	HttpSession session1 = request.getSession();
 		int userId = (int)session1.getAttribute("id");
+		
+		String titleSearch = request.getParameter("titleSearch");
     	
+		List<TodoDTO> todoList = new ArrayList<>();
+	    List<TodoDTO> searchList = new ArrayList<>();
 
-        List<TodoDTO> todoList = new ArrayList<>();
-        ListDAO dao = new ListDAO();
-        
-        try {
-			todoList = dao.ListTodo(userId);
-			request.setAttribute("todoList", todoList);
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+	    try {
+	        // 検索文字列が与えられた場合のみ検索を行う
+	        if (titleSearch != null && !titleSearch.isEmpty()) {
+	            SearchDAO searchDao = new SearchDAO();
+	            searchList = searchDao.SearchTodo(userId, titleSearch);
+	            request.setAttribute("searchList", searchList);
+	        } else {
+	            ListDAO dao = new ListDAO();
+	            todoList = dao.ListTodo(userId);
+	            request.setAttribute("todoList", todoList);
+	        }
+	    } catch (ClassNotFoundException | SQLException e) {
+	        e.printStackTrace();
+	    }
         
         String view = "/WEB-INF/views/list.jsp";
         RequestDispatcher dispatcher = request.getRequestDispatcher(view);
