@@ -26,7 +26,7 @@ public class ListServlet extends HttpServlet {
     	Object id = session != null ? session.getAttribute("id") : null;
     	
     	if (id == null) {
-    		response.sendRedirect("login");
+    		response.sendRedirect("login.jsp");
     		return;
     	}
     	

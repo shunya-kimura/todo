@@ -13,8 +13,6 @@ contentType="text/html; charset=UTF-8"
 </head>
 <body>
     <h1>Todo編集</h1>
-    <% String message = (String)request.getAttribute("message"); %>
-    <p><%= message %></p>
     <form action="update" method="get">
       <input type="hidden" name="id" value='<%= request.getAttribute("id") %>'>
       <label for="title">タイトル</label><br>

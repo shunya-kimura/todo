@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import jakarta.servlet.RequestDispatcher;
@@ -12,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.DBConnection;
 
 @WebServlet("/create")
 public class CreateServlet extends HttpServlet {
@@ -36,18 +36,8 @@ public class CreateServlet extends HttpServlet {
 		String priority = request.getParameter("priority");
 		
 		
-		String url = "jdbc:mysql://localhost/todo";
-		String user = "root";
-		String password = "";
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		String sql = "INSERT INTO posts (title, content, ymd, priority, user_id) VALUES (?, ?, ?, ?, ?)";
-		try (Connection connection = DriverManager.getConnection
-		(url, user, password);
+		try (Connection connection = DBConnection.getConnection();
 		PreparedStatement statement = connection.prepareStatement
 		(sql)) {
 

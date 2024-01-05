@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <!-- 検索フォーム -->
+    <form action="list" method="get">
+        <label>タイトルで検索:</label>
+        <input type="text" name="titleSearch">
+        <button type="submit">検索</button>
+    </form>
     <h2>Todoリスト</h2>
     <table border="1">
         <tr>
@@ -19,15 +25,31 @@
             <th>優先度</th>
         </tr>
         <% 
-            List<TodoDTO> todoList = (List<TodoDTO>)request.getAttribute("todoList"); 
-            for (TodoDTO todo : todoList) {
+            List<TodoDTO> todoList = (List<TodoDTO>)request.getAttribute("todoList");
+            List<TodoDTO> searchList = (List<TodoDTO>)request.getAttribute("searchList");
+            
+            if (searchList != null && !searchList.isEmpty()) {
+                for (TodoDTO todo : searchList) {
         %>
         <tr>
             <td><a href='show?id=<%= todo.getId() %>'><%= todo.getTitle() %></a></td>
             <td><%= todo.getYmd() %></td>
             <td><%= todo.getPriority() %></td>
         </tr>
-        <% } %>
+        <% 
+                }
+            } else {
+                for (TodoDTO todo : todoList) {
+        %>
+        <tr>
+            <td><a href='show?id=<%= todo.getId() %>'><%= todo.getTitle() %></a></td>
+            <td><%= todo.getYmd() %></td>
+            <td><%= todo.getPriority() %></td>
+        </tr>
+        <% 
+                }
+            }
+        %>
     </table>
 
     <div class="button-container">
@@ -38,8 +60,8 @@
     </div>
 
     <button><a href="new">新規作成</a></button> 
-     <form method="POST" action="logout">
-      <input type="submit" value="Logout">
+    <form method="POST" action="logout">
+        <input type="submit" value="Logout">
     </form>
 </body>
 </html>

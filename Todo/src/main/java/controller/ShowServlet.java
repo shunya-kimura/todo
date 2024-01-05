@@ -1,10 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -12,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.dao.ShowDAO;
+import model.dto.TodoDTO;
 
 @WebServlet("/show")
 public class ShowServlet extends HttpServlet {
@@ -20,55 +19,25 @@ public class ShowServlet extends HttpServlet {
 	HttpServletResponse response) throws ServletException,
 	IOException {
 		
-		if (request.getAttribute("message") == null) {
-			request.setAttribute("message", "todoを管理しましょう");
-		}
-
 		int postId = Integer.parseInt(request.getParameter("id"));
-		
-		String url = "jdbc:mysql://localhost/todo";
-		String user = "root";
-		String password = "";
+		ShowDAO post = new ShowDAO();
+		TodoDTO todoDTO = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (Exception e) {
+			todoDTO = post.showTodo(postId);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		
-		String sql = "SELECT * FROM posts WHERE id = ?";
-		try (Connection connection = DriverManager.getConnection
-		(url, user, password);
-		PreparedStatement statement = connection.prepareStatement
-		(sql)) {
-
-			statement.setInt(1, postId);
-			ResultSet results = statement.executeQuery();
-			
-			while (results.next()) {
-				
-				
-				String id = results.getString("id");
-				request.setAttribute("id" ,id);
-				
-				String title = results.getString("title");
-				request.setAttribute("title" ,title);
-				
-				String content = results.getString("content").
-				replaceAll("¥n", "<br>");
-			    request.setAttribute("content" ,content);
-			    
-			    String ymd = results.getString("ymd");
-			    request.setAttribute("ymd" ,ymd);
-				
-			}
-		} catch (Exception e) {
-			request.setAttribute("message", "Exception:" + e.
-			getMessage());
+		if (post != null) {
+			request.setAttribute("id", todoDTO.getId());
+			request.setAttribute("title", todoDTO.getTitle());
+			request.setAttribute("content", todoDTO.getContent());
+			request.setAttribute("ymd", todoDTO.getYmd());
 		}
 		
 		String view = "/WEB-INF/views/post.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher
-		(view);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(view);
 		dispatcher.forward(request, response);
 	}
 }
