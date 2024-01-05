@@ -12,7 +12,7 @@ import model.DBConnection;
 import model.dto.TodoDTO;
 
 
-public class ListDAO {
+public class TodoDAO {
     
     public List<TodoDTO> ListTodo(int userId) throws ClassNotFoundException, SQLException {
         List<TodoDTO> lists = new ArrayList<>();
@@ -40,9 +40,9 @@ public class ListDAO {
 		String sql = "SELECT * FROM posts WHERE id = ?";
 		
 		try (Connection con = DBConnection.getConnection()) {
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setInt(1, postId);
-			ResultSet res = stmt.executeQuery();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			ResultSet res = pstmt.executeQuery();
 			
 			while (res.next()) {
 				post.setId(res.getInt("id"));
@@ -56,6 +56,26 @@ public class ListDAO {
 		return post;
 	}
     
+    public TodoDTO showTodo(int postId) 
+    		throws SQLException, ClassNotFoundException {
+        TodoDTO post = new TodoDTO();
+        String sql = "SELECT * FROM posts WHERE id = ?";
+        try (Connection con = DBConnection.getConnection()) {
+             PreparedStatement pstmt = con.prepareStatement(sql);
+             pstmt.setInt(1, postId);
+             ResultSet res = pstmt.executeQuery();
+             while (res.next()) {
+                post.setId(res.getInt("id"));
+                post.setTitle(res.getString("title"));
+                post.setContent(res.getString("content").replaceAll("¥n", "<br>"));
+                post.setYmd(res.getDate("ymd"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	    return post;
+    }
+    
     public void destroyTodo(int postId) throws ClassNotFoundException, SQLException {
     	String sql = "DELETE FROM posts WHERE id = ?";
     	try(Connection con = DBConnection.getConnection();
@@ -63,6 +83,18 @@ public class ListDAO {
     				pstmt.setInt(1, postId);
     				pstmt.executeUpdate();
     			}
+    }
+    
+    public void updateTodo(int postId, String title, String content) 
+    		throws ClassNotFoundException, SQLException {
+    	String sql = "UPDATE posts SET title = ?, content = ? WHERE id =?";
+    	try(Connection con = DBConnection.getConnection();
+    			PreparedStatement pstmt = con.prepareStatement(sql)) {
+    		pstmt.setString(1, title);
+    		pstmt.setString(2, content);
+    		pstmt.setInt(3, postId);
+    		pstmt.executeUpdate();
+    	}
     }
     
 }

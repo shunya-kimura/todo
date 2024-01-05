@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.dao.ListDAO;
+import model.dao.TodoDAO;
 import model.dao.SearchDAO;
 import model.dto.TodoDTO;
 
@@ -45,7 +45,7 @@ public class ListServlet extends HttpServlet {
 	            searchList = searchDao.SearchTodo(userId, titleSearch);
 	            request.setAttribute("searchList", searchList);
 	        } else {
-	            ListDAO dao = new ListDAO();
+	            TodoDAO dao = new TodoDAO();
 	            todoList = dao.ListTodo(userId);
 	            request.setAttribute("todoList", todoList);
 	        }

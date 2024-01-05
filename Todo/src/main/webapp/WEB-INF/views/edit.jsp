@@ -13,7 +13,7 @@ contentType="text/html; charset=UTF-8"
 </head>
 <body>
     <h1>Todo編集</h1>
-    <form action="update" method="get">
+    <form action="update" method="post">
       <input type="hidden" name="id" value='<%= request.getAttribute("id") %>'>
       <label for="title">タイトル</label><br>
       <input type="text" name="title" value='<%= request.getAttribute("title") %>'><br>

@@ -20,7 +20,11 @@ contentType="text/html; charset=UTF-8"
     <ul>
       <li><p><a href="list">戻る</a></p></li>
       <li><p><a href='edit?id=<%= request.getAttribute("id") %>'>編集</a></p></li>
-      <li><p><a href='destroy?id=<%= request.getAttribute("id") %>'>削除</a></p></li>
+      <li><form action="destroy" method="POST">
+          <input type="hidden" name="id" value="<%= request.getAttribute("id") %>">
+          <button type="submit" class="btn btn-danger">削除</button>
+          </form>
+      </li>
     </ul>      
 </body>
 </html>
