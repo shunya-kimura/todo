@@ -1,8 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -11,7 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.DBConnection;
+import model.dao.TodoDAO;
 
 @WebServlet("/create")
 public class CreateServlet extends HttpServlet {
@@ -35,26 +34,14 @@ public class CreateServlet extends HttpServlet {
 		String ymd = request.getParameter("ymd");
 		String priority = request.getParameter("priority");
 		
-		
-		String sql = "INSERT INTO posts (title, content, ymd, priority, user_id) VALUES (?, ?, ?, ?, ?)";
-		try (Connection connection = DBConnection.getConnection();
-		PreparedStatement statement = connection.prepareStatement
-		(sql)) {
-
-			statement.setString(1, title);
-			statement.setString(2, content);
-			statement.setString(3, ymd);
-			statement.setString(4, priority);
-			statement.setInt(5, user_id);
-			
-			int number = statement.executeUpdate();
-			request.setAttribute("message", "タイトル:" + title + 
-			"の新規作成ができました");
-		
-		} catch (Exception e) {
-			request.setAttribute("message", "Exception:" + e.
-			getMessage());
-		}
+		TodoDAO todoDAO = new TodoDAO();
+		try {
+			todoDAO.createTodo(title, content, ymd, priority, user_id);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 		
 		String forward = "/list";
 		RequestDispatcher dispatcher = request.getRequestDispatcher
