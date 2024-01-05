@@ -76,15 +76,6 @@ public class TodoDAO {
 	    return post;
     }
     
-    public void destroyTodo(int postId) throws ClassNotFoundException, SQLException {
-    	String sql = "DELETE FROM posts WHERE id = ?";
-    	try(Connection con = DBConnection.getConnection();
-    			PreparedStatement pstmt = con.prepareStatement(sql)) {
-    				pstmt.setInt(1, postId);
-    				pstmt.executeUpdate();
-    			}
-    }
-    
     public void updateTodo(int postId, String title, String content) 
     		throws ClassNotFoundException, SQLException {
     	String sql = "UPDATE posts SET title = ?, content = ? WHERE id =?";
@@ -94,6 +85,30 @@ public class TodoDAO {
     		pstmt.setString(2, content);
     		pstmt.setInt(3, postId);
     		pstmt.executeUpdate();
+    	}
+    }
+    
+    public void destroyTodo(int postId) throws ClassNotFoundException, SQLException {
+    	String sql = "DELETE FROM posts WHERE id = ?";
+    	try(Connection con = DBConnection.getConnection();
+    			PreparedStatement pstmt = con.prepareStatement(sql)) {
+    		pstmt.setInt(1, postId);
+    		pstmt.executeUpdate();
+    	}
+    }
+    
+    public void createTodo(String title, String content, String ymd, String priority, int user_id) 
+    		throws ClassNotFoundException, SQLException {
+    	String sql = "INSERT INTO posts (title, content, ymd, priority, user_id) VALUES (?, ?, ?, ?, ?)";
+    	try (Connection con = DBConnection.getConnection();
+    			PreparedStatement pstmt = con.prepareStatement(sql)) {
+    		pstmt.setString(1, title);
+    		pstmt.setString(2, content);
+    		pstmt.setString(3, ymd);
+    		pstmt.setString(4, priority);
+    		pstmt.setInt(5, user_id);
+    		pstmt.executeUpdate();
+    		
     	}
     }
     
